@@ -7,22 +7,36 @@ def parse_tree(tree):
     """
     lines = tree.strip().split("\n")
     structure = {}
-    stack = []
-    current_dict = structure
+    stack = [(0, structure)]  # Tracks (indent_level, current_dict)
 
     for line in lines:
-        indent_level = len(line) - len(line.lstrip(" "))
-        name = line.strip(" ├──│└─")
+        # Skip empty lines
+        if not line.strip():
+            continue
 
-        while len(stack) > indent_level:
+        # Count the actual spaces before any tree characters
+        stripped_line = line.replace("│", " ")  # Replace vertical line with space
+        indent_spaces = len(stripped_line) - len(stripped_line.lstrip())
+        indent_level = indent_spaces // 2  # Tree characters use 2-space indentation
+
+        # Clean the name
+        name = line.strip()
+        for char in ["├── ", "└── ", "│   ", "    ", "/"]:
+            name = name.replace(char, "")
+        name = name.strip()
+
+        # Pop from stack until we find the parent level, but keep at least the root
+        while len(stack) > 1 and stack[-1][0] >= indent_level:
             stack.pop()
-            current_dict = stack[-1] if stack else structure
 
-        if line.endswith("/"):
+        # Get current dictionary from the last item in stack
+        current_dict = stack[-1][1]
+
+        # Add to structure
+        if line.strip().endswith("/"):  # Directory
             current_dict[name] = {}
-            stack.append(current_dict[name])
-            current_dict = current_dict[name]
-        else:
+            stack.append((indent_level, current_dict[name]))
+        else:  # File
             current_dict[name] = None
 
     return structure
@@ -34,9 +48,10 @@ def create_structure(base_path, structure):
     """
     for name, content in structure.items():
         current_path = os.path.join(base_path, name)
-        if content is None:
+        if content is None:  # It's a file
+            os.makedirs(os.path.dirname(current_path), exist_ok=True)
             open(current_path, "a").close()
-        else:
+        else:  # It's a directory
             os.makedirs(current_path, exist_ok=True)
             create_structure(current_path, content)
 

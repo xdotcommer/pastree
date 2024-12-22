@@ -41,3 +41,5 @@ htmlcov/
 # Local environment variables
 .env
 *.env
+
+.claudesync
