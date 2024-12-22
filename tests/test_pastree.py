@@ -147,3 +147,47 @@ def test_edge_cases():
     # Test directory with trailing slash variations
     assert parse_tree("dir/") == {"dir": {}}
     assert parse_tree("dir////") == {"dir": {}}
+
+
+def test_parse_tree_with_comments():
+    """Test parsing a tree structure that contains inline comments."""
+    tree_input = """
+    my-docker-project/
+    ├── Dockerfile                # Docker configuration file to build the image
+    ├── docker-compose.yml        # Compose file to manage multi-container setup (optional)
+    ├── .dockerignore             # Files and directories to ignore when building the Docker image
+    ├── app/                      # Application code folder
+    │   ├── __init__.py           # Initialization for Python projects (example)
+    │   ├── main.py               # Main entry point for the application
+    │   └── requirements.txt      # Python dependencies (if using Python)
+    ├── config/                   # Configuration files (optional)
+    │   └── settings.yaml         # Example configuration file
+    ├── tests/                    # Test code for the application
+    │   ├── test_main.py          # Example test file
+    │   └── __init__.py           # Initialization for Python test package
+    ├── logs/                     # Logs directory (optional)
+    ├── data/                     # Data directory for databases or other persistent storage (optional)
+    ├── scripts/                  # Utility scripts for the project
+    │   └── setup.sh              # Example setup script
+    ├── README.md                 # Project documentation
+    ├── .env                      # Environment variables file
+    └── LICENSE                   # License file for your project (optional)
+    """
+    expected = {
+        "my-docker-project": {
+            "Dockerfile": None,
+            "docker-compose.yml": None,
+            ".dockerignore": None,
+            "app": {"__init__.py": None, "main.py": None, "requirements.txt": None},
+            "config": {"settings.yaml": None},
+            "tests": {"test_main.py": None, "__init__.py": None},
+            "logs": {},
+            "data": {},
+            "scripts": {"setup.sh": None},
+            "README.md": None,
+            ".env": None,
+            "LICENSE": None,
+        }
+    }
+
+    assert parse_tree(tree_input) == expected

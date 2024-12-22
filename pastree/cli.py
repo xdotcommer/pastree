@@ -14,6 +14,9 @@ def parse_tree(tree):
         if not line.strip():
             continue
 
+        # Remove comments by splitting on '#' and taking the first part
+        line = line.split("#")[0]
+
         # Count the actual spaces before any tree characters
         stripped_line = line.replace("│", " ")  # Replace vertical line with space
         indent_spaces = len(stripped_line) - len(stripped_line.lstrip())
@@ -24,6 +27,10 @@ def parse_tree(tree):
         for char in ["├── ", "└── ", "│   ", "    ", "/"]:
             name = name.replace(char, "")
         name = name.strip()
+
+        # Skip if name is empty after cleaning
+        if not name:
+            continue
 
         # Pop from stack until we find the parent level, but keep at least the root
         while len(stack) > 1 and stack[-1][0] >= indent_level:
