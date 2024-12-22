@@ -1,5 +1,5 @@
 
-# pastree
+# pastree 🥐 ˖ 🌴
 
 **pastree** is a command-line tool for generating directory structures from tree-like input. Just paste your desired structure, and `pastree` creates all the necessary directories and files for you.
 
@@ -36,34 +36,22 @@ pastree
 1. Run the `pastree` command in your terminal.
 2. Paste your desired directory structure (in a tree-like format):
 
-```
-my_project/
-├── LICENSE
-├── README.md
-├── setup.py
-├── my_project/
-│   ├── __init__.py
-│   └── main.py
-└── tests/
-    ├── __init__.py
-    └── test_main.py
-```
+    ```bash
+    my_project/
+    ├── LICENSE
+    ├── README.md
+    ├── setup.py
+    ├── my_project/
+    │   ├── __init__.py
+    │   └── main.py
+    └── tests/
+        ├── __init__.py
+        └── test_main.py
+    ```
 
-3. Press **Ctrl+D** (Linux/macOS) or **Ctrl+Z** (Windows) to finish.
-4. `pastree` will create the following structure:
+3. Press **Ctrl+D** (Linux/macOS), **Ctrl+Z** (Windows) or press enter twice to finish.
 
-```
-my_project/
-├── LICENSE
-├── README.md
-├── setup.py
-├── my_project/
-│   ├── __init__.py
-│   └── main.py
-└── tests/
-    ├── __init__.py
-    └── test_main.py
-```
+4. `pastree` will create the corresponding directories and touch the files
 
 ---
 
@@ -87,4 +75,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 If you encounter any issues or have suggestions for improvement, feel free to open an issue on [GitHub](https://github.com/yourusername/pastree).
 
-Happy generating! 🌳
+Happy pastree making! 🌳 🌲 🌴
